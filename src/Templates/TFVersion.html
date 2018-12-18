@@ -1,0 +1,18 @@
+{% extends "VLayout.html" %}
+
+{% block content %}
+<!--TFIndex.html begin-->
+App ver:  {{ Form.Info['AppVer'] }}<br>
+UserID: {{ Form.Info['UserID']}}<br>
+UserName: {{ Form.Info['UserName']}}<br>
+
+
+<br>
+{% if Form.UserOK %}
+    <a href='/user_profile'>user profile</a><br>
+    <a href='/logout'>logout</a><br>
+{% else %}
+    <a href='/login'>Login</a><br>
+{% endif %}
+<!--TFIndex.html end-->
+{% endblock %}

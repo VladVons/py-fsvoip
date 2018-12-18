@@ -1,0 +1,10 @@
+# defaults for /etc/init.d/fsvoip
+
+ENABLED=1
+#OPTIONS="-p Default"
+SCRYPT="fsvoip.sh"
+WORKDIR="/home/linux/py-fsvoip/src"
+#ARGS=
+#
+USER=freeswitch
+#USER=linux
