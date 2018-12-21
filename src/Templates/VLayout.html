@@ -2,17 +2,19 @@
 <html>
   <head>
     {% block head %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="stylesheet" href="/Static/grid.css" type="text/css">
+    <link rel="stylesheet" href="Static/style.css?q=3.2" type="text/css">
     <title>{{ Form.Title }}</title>
     {% endblock %}
   </head>
+
   <body>
     <div id="content">
         {% block content %}{% endblock %}
     </div>
+
     <div id="footer" class="app-footer">
         <a href="https://github.com/VladVons/py-fvoip">fvoip 2018</a>
     </div>
   </body>
+
 </html>

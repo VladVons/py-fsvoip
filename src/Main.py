@@ -3,12 +3,25 @@
 
 import os
 import optparse
-from flask import Flask, request, current_app, send_from_directory
+from flask import Flask, request, current_app, send_from_directory, url_for
 #
 import Forms
 
 App = Flask(__name__, template_folder='Templates', static_folder='Static')
 
+'''
+@App.context_processor
+def override_url_for():
+    return dict(url_for=dated_url_for)
+
+def dated_url_for(endpoint, **values):
+    if (endpoint == 'static'):
+        filename = values.get('filename', None)
+        if (filename):
+            file_path = os.path.join(App.root_path, endpoint, filename)
+            values['q'] = int(os.stat(file_path).st_mtime)
+    return url_for(endpoint, **values)
+'''
 
 @App.route('/Download/<path:aFileName>', methods=['GET', 'POST'])
 def rDownload(aFileName):

@@ -2,37 +2,40 @@
 
 {% block content %}
 <!--TFSearch.html begin-->
-<form action="/search" method="POST">
+<form action="/search" method="GET">
     <div class="login">
         <div class="login-screen">
             <div class="app-title">
-                 <h1>{{ Form.Title }}</h1>
+                 {{ Form.Title }}
             </div>
-            <div class="login-form">
+            <div class="allign-form">
                 <div class="control-group">
                 {{ Form.Phone(class='login-field', placeholder='0976646510') }}
                 </div>
                 {{ Form.Submit(class="btn btn-primary btn-large btn-block") }}
-                <br>
             </div>
         </div>
     </div>
 </form>
 
-
+<div class="login login-screen" style="width:700px">
 <table>
   <tr>
+    <th>No</th>
     <th>Date</th>
     <th>Phone</th>
     <th>Duration</th> 
   </tr>
-  {% for File in Form.Files %}
-    <tr>
-      <td>{{File.get('Date')}}</td>
+  {%for File in Form.Files %}
+    <tr bgcolor="{{ loop.cycle('', '#B0E0E6') }}">
+      <td>{{ loop.index }}</td>
+      <td>{{ File.get('Date') }}</td>
       <td><a href="{{ File.get('File') }}">{{ File.get('Name') }}</a></td>
-      <td>{{File.get('Duration')}}</td>
+      <td>{{ File.get('Duration') }}</td>
     </tr>
   {% endfor %}
 </table>
+</div>
+
 <!--TFSearch.html end-->
 {% endblock %}

@@ -9,6 +9,7 @@ import Inc.Util.FS as FS
 class TFSearch(TForm):
     Title  = "Search"
     Phone  = StringField(description ="phone number", validators = [Required(), Length(min=1, max=16)])
+    #Days   = StringField(description ="days", validators = [Required(), Length(min=1, max=3)])
     Submit = SubmitField("OK")
 
     def Search(self, aDir, aFile):
@@ -28,8 +29,10 @@ class TFSearch(TForm):
         return Result
 
     def Render(self):
+        Dir  = current_app.config.get('RECORDS')
         if (request.method == "POST"):
             if (self.validate()):
-                Dir  = current_app.config.get('RECORDS')
                 self.Files = self.Search(Dir, self.Phone.data)
+        elif (request.method == "GET"):
+            self.Files = self.Search(Dir, request.args.get('Phone'))
         return self.RenderTpl()
