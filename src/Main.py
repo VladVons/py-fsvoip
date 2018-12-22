@@ -4,10 +4,21 @@
 import os
 import optparse
 from flask import Flask, request, current_app, send_from_directory, url_for
+from flask_login import LoginManager
 #
 import Forms
 
 App = Flask(__name__, template_folder='Templates', static_folder='Static')
+
+login_manager = LoginManager()
+login_manager.init_app(App)
+
+@login_manager.user_loader
+def load_user(aId):
+    print('---1')
+#    return User.query.get(int(aId))
+    return 10
+
 
 '''
 @App.context_processor
@@ -36,6 +47,7 @@ def rRootHandler(aName):
     NotFound = Forms.TFNotFound(request.form)
     Arr = {
     'index'   : Forms.TFIndex(request.form),
+    'login'   : Forms.TFLogin(request.form),
     'search'  : Forms.TFSearch(request.form),
     'version' : Forms.TFVersion(request.form)
     }
