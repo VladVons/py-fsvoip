@@ -10,6 +10,7 @@ VIRTUAL_ENV=/home/linux/virtenv/myapp
 source $VIRTUAL_ENV/bin/activate
 
 export SECRET_KEY='ABDF1245'
+export RECORDS='./Download'
 export DATABASE_URL='mysql://grafana:grafana2018@192.168.2.111/3w_grafana'
 #export PORT=8877
 ./fsvoip.py --port=8888
