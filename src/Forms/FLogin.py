@@ -1,11 +1,16 @@
+from flask import request
 from flask_login import login_user, current_user, LoginManager
+from werkzeug.urls import url_parse
+#
 from FForm import *
+from App.DbModel import TDUser
+from App import login
 
 
 class TFLogin(TForm):
     Title      = "Login user"
 
-    UserName   = StringField(description ="User", validators = [Required(), Length(min=1, max=16)])
+    UserName   = StringField(description ="User", validators = [Required(), Length(min=1, max=32)])
     Password   = PasswordField(description ="Password", validators = [Length(min=1, max=16)])
     RememberMe = BooleanField('Remember me')
     Submit     = SubmitField("Log in")
@@ -16,10 +21,16 @@ class TFLogin(TForm):
 
         if (request.method == "POST"):
             if (self.validate()):
-                if (SessionUser.Connect(self.UserName.data, self.Password.data)):
-                    return redirect("/user")
+                User = TDUser.query.filter_by(email=self.UserName.data).first()
+                if (User) and (User.passw == self.Password.data):
+                    login_user(User, remember = self.RememberMe.data)
+
+                    NextPage = request.args.get('next')
+                    if (not NextPage) or (url_parse(NextPage).netloc != ''):
+                        NextPage = 'index'
+                    return self.Redirect("user")
                 else:
                     self.Error = "Username or password incorrect"
-                    flash(self.Error)
-        return self.RenderTpl()
+                    self.Flash(self.Error)
 
+        return self.RenderTpl()

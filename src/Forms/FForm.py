@@ -1,4 +1,4 @@
-from flask   import render_template, request, redirect
+from flask   import render_template, request, redirect, flash, url_for
 from wtforms import Form, StringField, SubmitField, PasswordField, BooleanField, validators
 from wtforms.validators import Required, Length
 
@@ -13,4 +13,8 @@ class TForm(Form):
         raise NotImplementedError(Msg)
 
     def Redirect(self, aUrl):
-        return redirect(url_for(aUrl))
+        #return redirect(url_for(aUrl))
+        return redirect(aUrl)
+
+    def Flash(self, aMsg):
+        return flash(aMsg)

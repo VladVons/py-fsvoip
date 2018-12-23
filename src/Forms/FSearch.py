@@ -30,6 +30,7 @@ class TFSearch(TForm):
 
     def Render(self):
         Dir  = current_app.config.get('RECORDS')
+        print('-----5', Dir)
         if (request.method == "POST"):
             if (self.validate()):
                 self.Files = self.Search(Dir, self.Phone.data)
