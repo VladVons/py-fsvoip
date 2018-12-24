@@ -21,4 +21,6 @@ if (__name__ == "__main__"):
     SetExitHandler(OnExit)
 
     #DbInit.CreateDemoDb()
+    #DbInit.DeleteDb()
+
     app.run(host = '0.0.0.0', port = app.config.get('PORT'), debug = True)

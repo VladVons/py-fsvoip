@@ -3,7 +3,7 @@ from flask_login import login_user, current_user, LoginManager
 from werkzeug.urls import url_parse
 #
 from FForm import *
-from App.DbModel import TDUser
+from App.DbModel import TDbUser
 from App import login
 
 
@@ -21,7 +21,7 @@ class TFLogin(TForm):
 
         if (request.method == "POST"):
             if (self.validate()):
-                User = TDUser.query.filter_by(email=self.UserName.data).first()
+                User = TDbUser.query.filter_by(email=self.UserName.data).first()
                 if (User) and (User.passw == self.Password.data):
                     login_user(User, remember = self.RememberMe.data)
 
