@@ -14,9 +14,17 @@ def GetCommandLine():
 BaseDir = os.path.abspath(os.path.dirname(__file__))
 CMD = GetCommandLine()
 
-class TConfig():
+
+class TConfBase():
+    DEBUG = True
     SECRET_KEY = os.environ.get('eSECRET_KEY', 'APPKEY' + str(os.urandom(12)))
     SQLALCHEMY_DATABASE_URI = os.environ.get('eDATABASE_URL', 'sqlite:///' + os.path.join(BaseDir, 'App.db'))
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     PORT = os.environ.get('ePORT', CMD.port)
     RECORDS = os.environ.get('eRECORDS', CMD.records)
+
+class TConfRelease(TConfBase):
+    DEBUG = False
+
+class TConfDebug(TConfBase):
+    pass

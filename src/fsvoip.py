@@ -23,4 +23,4 @@ if (__name__ == "__main__"):
     #DbInit.CreateDemoDb()
     #DbInit.DeleteDb()
 
-    app.run(host = '0.0.0.0', port = app.config.get('PORT'), debug = True)
+    app.run(host = '0.0.0.0', port = app.config.get('PORT'))

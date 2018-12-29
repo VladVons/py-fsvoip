@@ -1,11 +1,11 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from Config import TConfig
+from Config import TConfRelease, TConfDebug
 
 
 app = Flask(__name__, template_folder='../Templates', static_folder='../Static')
-app.config.from_object(TConfig)
+app.config.from_object(TConfDebug)
 
 db = SQLAlchemy(app)
 
