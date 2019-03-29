@@ -7,7 +7,7 @@ import signal
 from Main import TMain
 
 
-if (__name__ == "__main__"):
+if (__name__ == "__main__"): 
     def SetExitHandler(aFunc):
         #prctl.prctl(prctl.NAME, 'FVoIP')
         #prctl.prctl(prctl.PDEATHSIG, signal.SIGTERM)
