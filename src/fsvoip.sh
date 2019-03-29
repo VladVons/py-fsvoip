@@ -9,4 +9,14 @@ VIRTUAL_ENV=/home/linux/virtenv/myapp
 
 source $VIRTUAL_ENV/bin/activate
 
-./fsvoip.py --port 8888
+
+export eSECRET_KEY='ABDF1245'
+export eRECORDS='./Download'
+#export eDATABASE_URL="sqlite://$(pwd)/App.db"
+export eDATABASE_URL='mysql://fsvoip:fsvoip2018@192.168.2.111/app_fsvoip'
+#export ePORT=8877
+env | grep "^e"
+echo
+
+./fsvoip.py --port=8888
+

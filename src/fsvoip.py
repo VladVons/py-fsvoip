@@ -4,7 +4,7 @@
 import prctl
 import signal
 #
-from Main import TMain
+from App import app, DbInit
 
 
 if (__name__ == "__main__"): 
@@ -20,5 +20,7 @@ if (__name__ == "__main__"):
 
     SetExitHandler(OnExit)
 
-    Obj = TMain()
-    Obj.Run()
+    #DbInit.CreateDemoDb()
+    #DbInit.DeleteDb()
+
+    app.run(host = '0.0.0.0', port = app.config.get('PORT'))
