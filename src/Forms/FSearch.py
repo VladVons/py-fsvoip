@@ -3,6 +3,8 @@ from flask import current_app
 from mutagen.mp3 import MP3
 import time
 import datetime
+import urllib
+#
 import Inc.Util.FS as FS
 
 
@@ -14,6 +16,10 @@ class TFSearch(TForm):
 
     def Search(self, aDir, aFile):
         Result = []
+        if (not aFile):
+            return Result
+
+        aFile = urllib.unquote(aFile).strip()
         Files = FS.FindFile([aDir], [aFile], True)
         Files.sort()
         for File in Files:

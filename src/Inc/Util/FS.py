@@ -4,9 +4,8 @@ import time
 
 def FindFile(aDirs, aFiles, aSubDir = False):
     Result = []
-
     for Dir in aDirs:
-        for Root, Folders, Files in os.walk(Dir):
+        for Root, Folders, Files in os.walk(Dir, followlinks = True):
             for File1 in aFiles:
                 for File2 in Files:
                     if (File1):
