@@ -24,4 +24,3 @@ def GetCTime(aFile):
     Result = time.localtime(os.path.getmtime(aFile))
     #time.strftime('%Y-%m-%d %H:%M:%S', Result)
     return Result
-
