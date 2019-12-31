@@ -6,12 +6,10 @@ import signal
 #
 from App import app, DbInit
 
-
 if (__name__ == "__main__"): 
     def SetExitHandler(aFunc):
-        #prctl.prctl(prctl.NAME, 'FVoIP')
-        #prctl.prctl(prctl.PDEATHSIG, signal.SIGTERM)
-
+        prctl.set_name('fsvoip')
+        prctl.set_pdeathsig(signal.SIGINT)
         signal.signal(signal.SIGTERM, aFunc)
 
     def OnExit(aSignal, func=None):

@@ -11,7 +11,7 @@ import Forms
 
 @app.route('/Download/<path:aFileName>', methods=['GET', 'POST'])
 def rDownload(aFileName):
-    Dir = current_app.root_path + '/Download'
+    Dir = current_app.root_path.replace('App', '') + '/Download'
     #uploads = os.path.join(current_app.root_path, App.config['UPLOAD_FOLDER'])
     return send_from_directory(directory=Dir, filename=aFileName)
 
