@@ -1,0 +1,65 @@
+{% extends "VLayout.html" %}
+
+{% block content %}
+<!--TFCompare.html begin-->
+<form action="/compare" method="POST">
+    <div class="login login-screen" style="width:500px">
+      <table>
+        <tr>
+          <td>Закладка</td>
+          <td>{{ Form.Sheet() }} </td>
+        </tr>
+        <tr>
+          <td>Код</td>
+          <td>{{ Form.Code() }} </td>
+        </tr>
+        <tr>
+          <td>Назва</td>
+          <td>{{ Form.Name() }} </td>
+        </tr>
+        <tr>
+          <td>Ціна</td>
+          <td>{{ Form.Price() }} </td>
+        </tr>
+        <tr>
+          <td>-</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>Файл 1</td>
+          <td>{{ Form.File1() }}</td>
+        </tr>
+        <tr>
+          <td>Файл 2</td>
+          <td>{{ Form.File1() }}</td>
+        </tr>
+      </table>
+      {{ Form.Submit(class="btn btn-primary btn-large btn-block") }}
+    </div>
+</form>
+
+<div class="login login-screen" style="width:800px">
+<table>
+  <tr>
+    <th>No</th>
+    <th>Code</th>
+    <th>Name</th>
+    <th>Price 1</th> 
+    <th>Price 2</th> 
+    <th>Diff</th> 
+  </tr>
+  {%for Item in Form.Data %}
+    <tr bgcolor="{{ loop.cycle('', '#B0E0E6') }}">
+      <td>{{ loop.index }}</td>
+      <td>{{ Item.get('Code') }}</td>
+      <td>{{ Item.get('Name') }}</td>
+      <td>{{ Item.get('Price1') }}</td>
+      <td>{{ Item.get('Price2') }}</td>
+      <td>{{ Item.get('Diff') }}</td>
+    </tr>
+  {% endfor %}
+</table>
+</div>
+
+<!--TFCompare.html end-->
+{% endblock %}

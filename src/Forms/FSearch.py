@@ -1,11 +1,7 @@
-from FForm import *
+from .FForm import *
 from flask import current_app
-from mutagen.mp3 import MP3
-import time
-import datetime
-import urllib
 #
-import Inc.Util.FS as FS
+from Inc.Util import UMP3
 
 
 class TFSearch(TForm):
@@ -14,31 +10,14 @@ class TFSearch(TForm):
     #Days   = StringField(description ="days", validators = [Required(), Length(min=1, max=3)])
     Submit = SubmitField("OK")
 
-    def Search(self, aDir, aFile):
-        Result = []
-        if (not aFile):
-            return Result
-
-        aFile = urllib.unquote(aFile).strip()
-        Files = FS.FindFile([aDir], [aFile], True)
-        Files.sort()
-        for File in Files:
-            Audio = MP3(File)
-            AudioLen = datetime.timedelta(seconds = int(Audio.info.length))
-
-            Result.append({
-                'Duration' : AudioLen, 
-                'File'  : File, 
-                'Name'  : FS.GetCoreName(File), 
-                'Date'  : time.strftime('%Y-%m-%d %H:%M', FS.GetCTime(File))
-                })
-        return Result
+    def Exec(self, aDir, aFile):
+        return UMP3.GetDirList(aDir, aFile)
 
     def Render(self):
         Dir  = current_app.config.get('RECORDS')
         if (request.method == "POST"):
             if (self.validate()):
-                self.Files = self.Search(Dir, self.Phone.data)
+                self.Data = self.Exec(Dir, self.Phone.data)
         elif (request.method == "GET"):
-            self.Files = self.Search(Dir, request.args.get('Phone'))
+            self.Data = self.Exec(Dir, request.args.get('Phone'))
         return self.RenderTpl()

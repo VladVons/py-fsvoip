@@ -1,6 +1,6 @@
 from flask_login import logout_user
 #
-from FForm import *
+from .FForm import *
 
 
 class TFLogout(TForm):

@@ -36,6 +36,7 @@ def rRootHandler(aName):
     'index'   : Forms.TFIndex(request.form),
     'user'    : Forms.TFUser(request.form),
     'search'  : Forms.TFSearch(request.form),
+    'compare' : Forms.TFCompare(request.form),
     'version' : Forms.TFVersion(request.form)
     }
 
@@ -47,4 +48,9 @@ def rRootHandler(aName):
 @app.route('/')
 @app.route('/index')
 def rRoot():
-    return redirect('/search')
+    Page = current_app.config.get('MAIN_PAGE')
+    if (Page):
+        return redirect(Page)
+    else:
+        Form = Forms.TFIndex(request.form)
+        return Form.Render()

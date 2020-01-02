@@ -10,7 +10,7 @@
             </div>
             <div class="allign-form">
                 <div class="control-group">
-                {{ Form.Phone(class='login-field', placeholder='0976646510') }}
+                  {{ Form.Phone(class='login-field', placeholder='0976646510') }}
                 </div>
                 {{ Form.Submit(class="btn btn-primary btn-large btn-block") }}
             </div>
@@ -26,12 +26,12 @@
     <th>Phone</th>
     <th>Duration</th> 
   </tr>
-  {%for File in Form.Files %}
+  {%for Item in Form.Data %}
     <tr bgcolor="{{ loop.cycle('', '#B0E0E6') }}">
       <td>{{ loop.index }}</td>
-      <td>{{ File.get('Date') }}</td>
-      <td><a href="{{ File.get('File') }}">{{ File.get('Name') }}</a></td>
-      <td>{{ File.get('Duration') }}</td>
+      <td>{{ Item.get('Date') }}</td>
+      <td><a href="{{ Item.get('File') }}">{{ Item.get('Name') }}</a></td>
+      <td>{{ Item.get('Duration') }}</td>
     </tr>
   {% endfor %}
 </table>

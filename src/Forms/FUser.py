@@ -1,4 +1,4 @@
-from FForm import *
+from .FForm import *
 
 class TFUser(TForm):
     Title      = "User"

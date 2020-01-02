@@ -1,4 +1,4 @@
-from FForm import TForm
+from .FForm import TForm
 
 class TFNotFound(TForm):
     Title = "Error page "

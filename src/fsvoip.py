@@ -4,7 +4,9 @@
 import prctl
 import signal
 #
-from App import app, DbInit
+from App import app
+#from App import DbInit
+
 
 if (__name__ == "__main__"): 
     def SetExitHandler(aFunc):
