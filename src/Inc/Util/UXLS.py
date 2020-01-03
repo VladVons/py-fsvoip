@@ -65,25 +65,25 @@ class TXls():
       Items2 = self.LoadFile_xlsx(aFile2)
     else:
       print('unknown format %s' % Ext)
-      return result
+      return Result
 
     # find missed items and items with different prices
     for Code in Items1:
       Name = Items1[Code].get('Name')
-      Price1 = Items1[Code].get('Price')
+      Price1 = Items1[Code].get('Price', 0)
       if (Items2.get(Code)):
-        Price2 = Items2[Code].get('Price')
+        Price2 = Items2[Code].get('Price', 0)
         if (Price1 != Price2):
-          Result.append([Code, Name, Price1, Price2, Price1 - Price2])
+          Result.append([Code, Name, Price1, Price2, round(Price1 - Price2, 3), round(100 - Price1 / Price2 * 100, 2)])
       else:
-          Result.append([Code, Name, Price1, 0, 0])
+          Result.append([Code, Name, Price1, 0, 0, 0])
 
     # find new items
     for Code in Items2:
       Name = Items2[Code].get('Name')
       if (not Items1.get(Code)):
-          Price2 = Items2[Code].get('Price')
-          Result.append([Code, Name, 0, Price2, 0])
+          Price2 = Items2[Code].get('Price', 0)
+          Result.append([Code, Name, 0, Price2, 0, 0])
 
     return Result
 
@@ -91,7 +91,7 @@ class TXls():
   def Export(aData, aFile):
     wb = Workbook()
     ws = wb.active
-    ws.append(['Code', 'Name', 'Price1', 'Price2', 'Diff'])
+    ws.append(['Code', 'Name', 'Price1', 'Price2', 'Diff', 'PCent'])
     for Item in aData:
       ws.append(Item)
     wb.save(aFile)

@@ -1,3 +1,6 @@
+import os
+import tempfile
+
 from .FForm import *
 from flask import current_app
 from flask_uploads import UploadSet
@@ -8,32 +11,31 @@ from Inc.Util import UXLS
 class TFCompare(TForm):
     Title  = "Compare"
     Sheet  = StringField()
-    Code   = StringField(validators=[Required()])
-    Name   = StringField(validators=[Required()])
-    Price  = StringField(validators=[Required()])
-    File1  = FileField(validators=[Required()])
-    File2  = FileField(validators=[Required()])
+    Code   = StringField(validators=[DataRequired()])
+    Name   = StringField(validators=[DataRequired()])
+    Price  = StringField(validators=[DataRequired()])
+    File1  = FileField(validators=[DataRequired()])
+    File2  = FileField(validators=[DataRequired()])
     Submit = SubmitField("OK")
 
     def Exec(self, aSheet, aCode, aName, aPrice, aFile1, aFile2):
-        f1 = request.files.get('File1')
-        print('---', aSheet, aCode, aName, aPrice, aFile1, aFile2, f1)
-        #Xls = UXLS.TXls(aSheet = aSheet, aCode = aCode, aName = aName, aPrice = aPrice)
-        #Data = Xls.Compare(aFile1, aFile2)
-        Data = []
-        return Data
+        FileName1 = tempfile.mktemp() + '_' + aFile1.filename
+        FileName2 = tempfile.mktemp() + '_' + aFile2.filename
+        aFile1.save(FileName1)
+        aFile2.save(FileName2)
+
+        Xls = UXLS.TXls(aSheet = aSheet.data, aCode = aCode.data, aName = aName.data, aPrice = aPrice.data)
+        Result = Xls.Compare(FileName1, FileName2)
+
+        os.remove(FileName1)
+        os.remove(FileName2)
+
+        return Result
 
     def Render(self):
-        print('111')
         if (request.method == "POST"):
-            print('222')
-            #if self.validate_on_submit():
-            #if (self.validate()):
-            if (self.Submit.data):
-              print('333')
-              self.Data = self.Exec(self.Sheet.data, self.Code.data, self.Name.data, self.Price.data, self.File1.data, self.File2.data)
-        #elif (request.method == "GET"):
-        #    Args = request.args
-        #    if Args.get('Submit'):
-        #      self.Data = self.Exec(Args.get('Sheet'), Args.get('Code'), Args.get('Name'), Args.get('Price'), Args.get('File1'), Args.get('File2'))
+            if (request.files) and (self.Submit.data):
+                File1 = request.files.get('File1')
+                File2 = request.files.get('File2')
+                self.Data = self.Exec(self.Sheet, self.Code, self.Name, self.Price, File1, File2)
         return self.RenderTpl()

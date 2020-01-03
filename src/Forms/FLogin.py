@@ -10,7 +10,7 @@ from App import login
 class TFLogin(TForm):
     Title      = "Login user"
 
-    UserName   = StringField(description ="User", validators = [Required(), Length(min=1, max=32)])
+    UserName   = StringField(description ="User", validators = [DataRequired(), Length(min=1, max=32)])
     Password   = PasswordField(description ="Password", validators = [Length(min=1, max=16)])
     RememberMe = BooleanField('Remember me')
     Submit     = SubmitField("Log in")

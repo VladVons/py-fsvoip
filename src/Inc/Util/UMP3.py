@@ -17,10 +17,11 @@ def GetDirList(aDir, aFile):
         Audio = MP3(File)
         AudioLen = datetime.timedelta(seconds = int(Audio.info.length))
 
+        SFile = UFS.SplitName(File)
         Result.append({
           'Duration' : AudioLen,
           'File'  : File,
-          'Name'  : UFS.GetCoreName(File),
+          'Name'  : SFile.Name,
           'Date'  : time.strftime('%Y-%m-%d %H:%M', UFS.GetCTime(File))
         })
     return Result

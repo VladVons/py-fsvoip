@@ -22,4 +22,4 @@ export eDATABASE_URL='mysql://fsvoip:fsvoip2018@192.168.2.111/app_fsvoip'
 env | grep "^e"
 echo
 
-./fsvoip.py --port=8888
+./fsvoip.py --port=8800

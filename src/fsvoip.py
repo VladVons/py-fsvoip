@@ -6,6 +6,7 @@ import signal
 #
 from App import app
 #from App import DbInit
+from Inc.Log          import Log
 
 
 if (__name__ == "__main__"): 
