@@ -3,7 +3,7 @@ import tempfile
 
 from .FForm import *
 from flask import current_app
-from flask_uploads import UploadSet
+#from flask_uploads import UploadSet
 #
 from Inc.Util import UXLS
 
