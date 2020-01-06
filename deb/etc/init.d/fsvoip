@@ -25,10 +25,16 @@ SCRYPT="$NAME.sh"
 WORKDIR="/usr/lib/$NAME"
 ARGS=""
 DEFAULT="/etc/default/$NAME"
+VIRTUAL_ENV="/usr"
 if [ -r $DEFAULT ] ; then
   . $DEFAULT
 fi
 DAEMON="$WORKDIR/$SCRYPT"
+
+export VIRTUAL_ENV
+#PATH="$VIRTUAL_ENV/bin:$PATH"
+#export PATH
+
 
 . /lib/lsb/init-functions
 

@@ -4,11 +4,15 @@
 
 #when running as service (start-stop-daemon)as  another user VIRTUAL_ENV should be taken from env, but not
 #/usr/bin/env | grep VIRTUAL
-echo "Env: $VIRTUAL_ENV, user: $USER" >> /tmp/fvoip.log
+
+Now="$(date +%Y-%m-%d-%H:%M:%S)"
+Msg="$Now, VIRTUAL_ENV:$VIRTUAL_ENV, PYTHON_HOME:$PYTHON_HOME, USER: $USER" 
+echo $Msg
+echo $Msg >> /tmp/fsvoip.sh.log
+
 #VIRTUAL_ENV=/home/linux/virtenv/py36
 
 source $VIRTUAL_ENV/bin/activate
-
 
 
 #export eMAIN_PAGE='/index'

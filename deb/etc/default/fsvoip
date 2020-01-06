@@ -3,8 +3,7 @@
 ENABLED=1
 #OPTIONS="-p Default"
 SCRYPT="fsvoip.sh"
-WORKDIR="/home/linux/py-fsvoip/src"
+WORKDIR="/home/flask/py-fsvoip/src"
 #ARGS=
-#
-USER=freeswitch
-#USER=linux
+USER=flask
+VIRTUAL_ENV="/home/flask/virtenv/py3"

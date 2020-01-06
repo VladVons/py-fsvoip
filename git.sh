@@ -47,7 +47,7 @@ GitAuth()
 {
   Log "$0->$FUNCNAME"
 
-  sudo chown -R $USER .
+  #sudo chown -R $USER .
 
   # sign with eMail
   git config --global user.email $Mail
