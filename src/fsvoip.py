@@ -4,6 +4,7 @@
 from Inc.Log import Log, TLogConsole, TLogFile
 Log.AddEcho(TLogConsole())
 Log.AddEcho(TLogFile('/tmp/fsvoip.py.log'))
+Log.AddEcho(TLogFile('fsvoip.py.log'))
 Log.Print(1, 'i', __name__, 'starting')
 
 try:

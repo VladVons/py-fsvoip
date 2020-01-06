@@ -74,7 +74,7 @@ class TXls():
       if (Items2.get(Code)):
         Price2 = Items2[Code].get('Price', 0)
         if (Price1 != Price2):
-          Result.append([Code, Name, Price1, Price2, round(Price1 - Price2, 3), round(100 - Price1 / Price2 * 100, 2)])
+          Result.append([Code, Name, Price1, Price2, round(Price2 - Price1, 3), round(100 - Price1 / Price2 * 100, 2)])
       else:
           Result.append([Code, Name, Price1, 0, 0, 0])
 

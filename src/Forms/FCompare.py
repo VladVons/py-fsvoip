@@ -5,6 +5,7 @@ from .FForm import *
 from flask import current_app
 #from flask_uploads import UploadSet
 #
+from Inc.Log import Log
 from Inc.Util import UXLS
 
 
@@ -37,5 +38,6 @@ class TFCompare(TForm):
             if (request.files) and (self.Submit.data):
                 File1 = request.files.get('File1')
                 File2 = request.files.get('File2')
+                Log.Print(1, 'w', 'Addr: %s, File1 %s, File2 %s' % (request.remote_addr, File1.filename, File2.filename))
                 self.Data = self.Exec(self.Sheet, self.Code, self.Name, self.Price, File1, File2)
         return self.RenderTpl()
