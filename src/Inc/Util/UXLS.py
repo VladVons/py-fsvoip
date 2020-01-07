@@ -3,6 +3,7 @@
 
 import os
 import xlrd
+from pyexcel_ods import get_data
 from openpyxl import load_workbook, Workbook
 from openpyxl.utils import column_index_from_string
 
@@ -18,6 +19,8 @@ class TXls():
     self.Fields.Code  = column_index_from_string(aCode)  - 1
     self.Fields.Name  = column_index_from_string(aName)  - 1
     self.Fields.Price = column_index_from_string(aPrice) - 1
+    pass
+
 
   def LoadFile_xlsx(self, aFile):
     wb = load_workbook(filename = aFile, read_only = True, data_only = True)
@@ -36,6 +39,7 @@ class TXls():
     print('File:', aFile,  ', Sheet:', ws.title, ', Records:', ws.max_row)
     return Result
 
+
   def LoadFile_xls(self, aFile):
     wb = xlrd.open_workbook(aFile)
 
@@ -53,6 +57,28 @@ class TXls():
     print('File:', aFile,  ', Sheet:', ws.name, ', Records:', ws.nrows)
     return Result
 
+
+  def LoadFile_ods(self, aFile):
+    Result = {}
+
+    Data = get_data(aFile)
+    if (self.Fields.Sheet):
+      Sheet = self.Fields.Sheet
+    else:
+      Sheets = list(Data.keys())
+      Sheet = Sheets[0]
+
+    Items = Data.get(Sheet)
+    for Item in Items:
+      MaxIdx = max(self.Fields.Code, self.Fields.Name, self.Fields.Price)
+      if (MaxIdx <= len(Item)):
+        Code = Item[self.Fields.Code]
+        if (Code):
+          Result[Code] = {"Name": Item[self.Fields.Name], "Price" : Item[self.Fields.Price]}
+
+    print('File:', aFile,  ', Sheet:', Sheet, ', Records:', len(Items))
+    return Result
+
   def Compare(self, aFile1, aFile2):
     Result = []
 
@@ -63,6 +89,9 @@ class TXls():
     elif (Ext == '.xlsx'):
       Items1 = self.LoadFile_xlsx(aFile1)
       Items2 = self.LoadFile_xlsx(aFile2)
+    elif (Ext == '.ods'):
+      Items1 = self.LoadFile_ods(aFile1)
+      Items2 = self.LoadFile_ods(aFile2)
     else:
       print('unknown format %s' % Ext)
       return Result
@@ -86,6 +115,7 @@ class TXls():
           Result.append([Code, Name, 0, Price2, 0, 0])
 
     return Result
+
 
   @staticmethod
   def Export(aData, aFile):
@@ -114,3 +144,4 @@ class TBrend():
 #Brend.Compare('laktalis', 'lactalis-p1.xlsx', 'lactalis-p2b.xlsx', 'p3.xlsx')
 #Brend.Compare('lusdorf',  'ld-1.xlsx',         'ld-2.xlsx', 'p3.xlsx')
 #Brend.Compare('lusdorf',  'ld-1.xls',         'ld-2.xls', 'p3.xlsx')
+#Brend.Compare('lusdorf',  'ld-1.ods',         'ld-2.ods', 'p3.xlsx')
