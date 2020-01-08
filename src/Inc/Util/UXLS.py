@@ -65,6 +65,8 @@ class TXls():
     print('File:', aFile,  ', Sheet:', ws.title, ', Records:', ws.max_row)
     return Result
 
+
+  #self.Fields indexes doesnt work correctly with compined cells
   def LoadFile_ods(self, aFile):
     Result = {}
 
@@ -77,7 +79,7 @@ class TXls():
     Items = Data.get(Sheet)
     for Item in Items:
       MaxIdx = max(self.Fields.Code, self.Fields.Name, self.Fields.Price)
-      if (MaxIdx <= len(Item)):
+      if (MaxIdx < len(Item)):
         Code = Item[self.Fields.Code]
         if (Code):
           Result[Code] = {"Name": Item[self.Fields.Name], "Price" : Item[self.Fields.Price]}
