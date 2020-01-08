@@ -11,6 +11,7 @@ from openpyxl import load_workbook, Workbook
 from openpyxl.utils import column_index_from_string
 
 ## -- ods
+#https://www.it-swarm.net/ru/python/kak-preobrazovat-elektronnye-tablicy-opendocument-v-pandu-dataframe/1041032955/
 #import odf.opendocument
 #import xml.parsers.expat
 from pyexcel_ods import get_data
