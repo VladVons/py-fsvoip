@@ -2,10 +2,18 @@
 # 2019.12.30
 
 import os
-import xlrd
-from pyexcel_ods import get_data
+
+## - xls
+from xlrd import open_workbook
+
+## -- xlsx
 from openpyxl import load_workbook, Workbook
 from openpyxl.utils import column_index_from_string
+
+## -- ods
+#import odf.opendocument
+#import xml.parsers.expat
+from pyexcel_ods import get_data
 
 
 class TFields():
@@ -22,26 +30,8 @@ class TXls():
     pass
 
 
-  def LoadFile_xlsx(self, aFile):
-    wb = load_workbook(filename = aFile, read_only = True, data_only = True)
-
-    if (self.Fields.Sheet):
-      ws = wb[self.Fields.Sheet]
-    else:
-      ws = wb.active
-
-    Result = {}
-    for row in ws.rows:
-      Code = row[self.Fields.Code].value
-      if (Code is not None):
-        Result[Code] = {"Name": row[self.Fields.Name].value, "Price" : row[self.Fields.Price].value}
-
-    print('File:', aFile,  ', Sheet:', ws.title, ', Records:', ws.max_row)
-    return Result
-
-
   def LoadFile_xls(self, aFile):
-    wb = xlrd.open_workbook(aFile)
+    wb = open_workbook(aFile)
 
     if (self.Fields.Sheet):
       ws = wb.sheet_by_name(self.Fields.Sheet)
@@ -58,6 +48,23 @@ class TXls():
     return Result
 
 
+  def LoadFile_xlsx(self, aFile):
+    wb = load_workbook(filename = aFile, read_only = True, data_only = True)
+
+    if (self.Fields.Sheet):
+      ws = wb[self.Fields.Sheet]
+    else:
+      ws = wb.active
+
+    Result = {}
+    for row in ws.rows:
+      Code = row[self.Fields.Code].value
+      if (Code is not None):
+        Result[Code] = {"Name": row[self.Fields.Name].value, "Price": row[self.Fields.Price].value}
+
+    print('File:', aFile,  ', Sheet:', ws.title, ', Records:', ws.max_row)
+    return Result
+
   def LoadFile_ods(self, aFile):
     Result = {}
 
@@ -65,8 +72,7 @@ class TXls():
     if (self.Fields.Sheet):
       Sheet = self.Fields.Sheet
     else:
-      Sheets = list(Data.keys())
-      Sheet = Sheets[0]
+      Sheet = list(Data.keys())[0]
 
     Items = Data.get(Sheet)
     for Item in Items:
