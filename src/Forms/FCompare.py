@@ -11,10 +11,15 @@ from Inc.Util import UXLS
 
 class TFCompare(TForm):
     Title  = "Compare"
-    Sheet  = StringField()
-    Code   = StringField(validators=[DataRequired()])
-    Name   = StringField(validators=[DataRequired()])
-    Price  = StringField(validators=[DataRequired()])
+
+    Sheet1 = StringField()
+    Sheet2 = StringField()
+    Code1  = StringField(validators=[DataRequired()])
+    Code2  = StringField()
+    Name1  = StringField(validators=[DataRequired()])
+    Name2  = StringField()
+    Price1 = StringField(validators=[DataRequired()])
+    Price2 = StringField()
     File1  = FileField(validators=[DataRequired()])
     File2  = FileField(validators=[DataRequired()])
     Submit = SubmitField("OK")
@@ -34,10 +39,37 @@ class TFCompare(TForm):
         return Result
 
     def Render(self):
+        self.Data = {}
+
         if (request.method == "POST"):
             if (request.files) and (self.Submit.data):
-                File1 = request.files.get('File1')
-                File2 = request.files.get('File2')
-                Log.Print(1, 'w', 'Addr: %s, File1 %s, File2 %s' % (request.remote_addr, File1.filename, File2.filename))
-                self.Data = self.Exec(self.Sheet, self.Code, self.Name, self.Price, File1, File2)
+                Log.Print(1, 'w', 'Addr: %s, File1 %s, File2 %s' % (request.remote_addr, self.File1.data, self.File2.data))
+
+                Fields = {
+                    'Sheet': [self.Sheet1, self.Sheet2],
+                    'Code':  [self.Code1,  self.Code2],
+                    'Name':  [self.Name1,  self.Name2],
+                    'Price': [self.Price1, self.Price2]
+                }
+
+                for Field in Fields:
+                    if (not Fields[Field][1].data):
+                        #Fields[Field][1].data = Fields[Field][0].data
+                        pass
+
+                self.Info = []
+                File = [request.files.get('File1'), request.files.get('File2')]
+                Xls  = [None, None]
+                for i in range(2):
+                    FileName = tempfile.mktemp() + '_' + File[i].filename
+                    File[i].save(FileName)
+                    Xls[i] = UXLS.TXls(
+                        aSheet = Fields['Sheet'][i].data,
+                        aCode = Fields['Code'][i].data,
+                        aName = Fields['Name'][i].data,
+                        aPrice = Fields['Price'][i].data)
+                    Xls[i].LoadFile(FileName)
+                    self.Info += Xls[i].Info
+                    os.remove(FileName)
+                self.Data = Xls[0].Compare(Xls[1])
         return self.RenderTpl()

@@ -3,34 +3,36 @@
 {% block content %}
 <!--TFCompare.html begin-->
 <form action="/compare" method="POST" enctype="multipart/form-data">
-    <div class="login login-screen" style="width:500px">
+    <div class="login login-screen" style="width:700px">
       <table>
         <tr>
+          <td></td>
+          <td>Файл 1 (xls, xlsx)</td>
+          <td>Файл 2 (xls, xlsx)</td>
+        </tr>
+        <tr>
           <td>Закладка</td>
-          <td>{{ Form.Sheet() }} </td>
+          <td>{{ Form.Sheet1() }}</td>
+          <td>{{ Form.Sheet2() }}</td>
         </tr>
         <tr>
           <td>Код</td>
-          <td>{{ Form.Code() }} </td>
+          <td>{{ Form.Code1() }}</td>
+          <td>{{ Form.Code2() }}</td>
         </tr>
         <tr>
           <td>Назва</td>
-          <td>{{ Form.Name() }} </td>
+          <td>{{ Form.Name1() }}</td>
+          <td>{{ Form.Name2() }}</td>
         </tr>
         <tr>
           <td>Ціна</td>
-          <td>{{ Form.Price() }} </td>
+          <td>{{ Form.Price1() }}</td>
+          <td>{{ Form.Price2() }}</td>
         </tr>
         <tr>
-          <td>-</td>
-          <td>-</td>
-        </tr>
-        <tr>
-          <td>Файл 1 (xls, xlsx)</td>
+          <td>Вибрати</td>
           <td>{{ Form.File1() }}</td>
-        </tr>
-        <tr>
-          <td>Файл 2 (xls, xlsx)</td>
           <td>{{ Form.File2() }}</td>
         </tr>
       </table>
@@ -38,8 +40,14 @@
     </div>
 </form>
 
-<div class="login login-screen" style="width:1100px">
+<div class="login login-screen" style="width:1200px">
 <table>
+  <caption>
+    {%for Item in Form.Info %}
+      {{ Item }}<br>
+    {% endfor %}
+  </caption>
+
   <tr>
     <th>N</th>
     <th>Код</th>
@@ -49,6 +57,7 @@
     <th>+/-</th> 
     <th>%</th> 
   </tr>
+
   {%for Item in Form.Data %}
     <tr bgcolor="{{ loop.cycle('', '#B0E0E6') }}">
       <td>{{ loop.index }}</td>
