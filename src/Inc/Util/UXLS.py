@@ -51,7 +51,6 @@ class TXls():
   @staticmethod
   def ToDigit(aValue):
     if (aValue):
-      print(aValue)
       aValue = re.sub('[^0-9]', '', str(aValue))
     return aValue
 
