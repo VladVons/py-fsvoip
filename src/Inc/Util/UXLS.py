@@ -145,8 +145,6 @@ class TXls():
       if (not self.Data.get(Code)):
           Price2 = self.ToFloat(aTXls.Data[Code].get('Price', 0))
           Result.append([Code, Name, 0, Price2, 0, 0])
-
-    print('---5', len(Result))
     return Result
 
   @staticmethod

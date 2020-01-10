@@ -43,8 +43,6 @@ class TFCompare(TForm):
 
         if (request.method == "POST"):
             if (request.files) and (self.Submit.data):
-                Log.Print(1, 'w', 'Addr: %s, File1 %s, File2 %s' % (request.remote_addr, self.File1.data, self.File2.data))
-
                 Fields = {
                     'Sheet': [self.Sheet1, self.Sheet2],
                     'Code':  [self.Code1,  self.Code2],
@@ -58,8 +56,8 @@ class TFCompare(TForm):
                         pass
 
                 self.Info = []
-                File = [request.files.get('File1'), request.files.get('File2')]
                 Xls  = [None, None]
+                File = [request.files.get('File1'), request.files.get('File2')]
                 for i in range(2):
                     Xls[i] = UXLS.TXls()
                     if (File[i].filename):
@@ -70,4 +68,5 @@ class TFCompare(TForm):
                         self.Info += Xls[i].Info
                         os.remove(FileName)
                 self.Data = Xls[0].Compare(Xls[1])
+                Log.Print(1, 'w', 'Addr: %s, File1 %s, File2 %s' % (request.remote_addr, File[0].filename, File[1].filename))
         return self.RenderTpl()
