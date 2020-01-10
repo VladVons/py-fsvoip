@@ -4,7 +4,6 @@
 import os
 import re
 
-
 ## - xls
 from xlrd import open_workbook
 
@@ -12,12 +11,15 @@ from xlrd import open_workbook
 from openpyxl import load_workbook, Workbook
 from openpyxl.utils import column_index_from_string
 
+import xlsxwriter
+
 ## -- ods
 #https://www.it-swarm.net/ru/python/kak-preobrazovat-elektronnye-tablicy-opendocument-v-pandu-dataframe/1041032955/
 #import odf.opendocument
 #import xml.parsers.expat
 from pyexcel_ods import get_data
 
+xlsxwriter
 
 class TFields():
   pass
@@ -147,14 +149,26 @@ class TXls():
           Result.append([Code, Name, 0, Price2, 0, 0])
     return Result
 
+  #@staticmethod
+  #def Export_NotWork_openpyxl(aData, aFile):
+  #  wb = Workbook()
+  #  ws = wb.active
+  #  Data = ('Code', 'Name', 'Price1', 'Price2', 'Diff', 'PCent')
+  #  ws.append(Data)
+  #  for Item in aData:
+  #    ws.append(Item)
+  #  wb.save(aFile)
+
   @staticmethod
   def Export(aData, aFile):
-    wb = Workbook()
-    ws = wb.active
-    ws.append(['Code', 'Name', 'Price1', 'Price2', 'Diff', 'PCent'])
-    for Item in aData:
-      ws.append(Item)
-    wb.save(aFile)
+    wb = xlsxwriter.Workbook(aFile)
+    ws = wb.add_worksheet()
+
+    aData.insert(0, ['Code', 'Name', 'Price1', 'Price2', 'Diff', 'PCent'])
+    for IdxRow, Row in enumerate(aData):
+      for IdxCol, Col in enumerate(Row):
+        ws.write(IdxRow, IdxCol, Col)
+    wb.close()
 
 
 class TBrend():

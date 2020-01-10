@@ -35,16 +35,25 @@
           <td>{{ Form.File1() }}</td>
           <td>{{ Form.File2() }}</td>
         </tr>
+        <tr>
+          <td></td>
+          <td colspan="2">{{ Form.Download() }} Скачати</td> 
+        </tr>
+        <tr>
+          <td></td>
+          <td colspan="2">{{ Form.Submit(class="btn btn-primary btn-large btn-block") }}</td> 
+        </tr>
       </table>
-      {{ Form.Submit(class="btn btn-primary btn-large btn-block") }}
     </div>
 </form>
+
+<iframe  width="1" height="1" frameborder="0" src="{{ Form.HDownloadFile }}"></iframe>
 
 <div class="login login-screen" style="width:1200px">
   <table>
     <tr">
       <td>
-      {%for Item in Form.Info %}
+      {%for Item in Form.HInfo %}
         {{ Item }}<br>
       {% endfor %}
       </td>
@@ -63,7 +72,7 @@
       <th>%</th> 
     </tr>
 
-    {%for Item in Form.Data %}
+    {%for Item in Form.HData %}
     <tr bgcolor="{{ loop.cycle('', '#B0E0E6') }}">
       <td>{{ loop.index }}</td>
       <td>{{ Item[0] }}</td>

@@ -22,7 +22,8 @@ class TFCompare(TForm):
     Price2 = StringField()
     File1  = FileField(validators=[DataRequired()])
     File2  = FileField()
-    Submit = SubmitField("OK")
+    Download = BooleanField(label="DoesntWork")
+    Submit = SubmitField(label="OK")
 
     def Exec(self, aSheet, aCode, aName, aPrice, aFile1, aFile2):
         FileName1 = tempfile.mktemp() + '_' + aFile1.filename
@@ -39,7 +40,8 @@ class TFCompare(TForm):
         return Result
 
     def Render(self):
-        self.Data = {}
+        self.HData = {}
+        self.HDownloadFile = ""
 
         if (request.method == "POST"):
             if (request.files) and (self.Submit.data):
@@ -55,7 +57,7 @@ class TFCompare(TForm):
                         #Fields[Field][1].data = Fields[Field][0].data
                         pass
 
-                self.Info = []
+                self.HInfo = []
                 Xls  = [None, None]
                 File = [request.files.get('File1'), request.files.get('File2')]
                 for i in range(2):
@@ -65,8 +67,15 @@ class TFCompare(TForm):
                         FileName = tempfile.mktemp() + '_' + File[i].filename
                         File[i].save(FileName)
                         Xls[i].LoadFile(FileName)
-                        self.Info += Xls[i].Info
+                        self.HInfo += Xls[i].Info
                         os.remove(FileName)
-                self.Data = Xls[0].Compare(Xls[1])
+                self.HData = Xls[0].Compare(Xls[1])
+
+                if (self.Download.data):
+                    FileName = 'Compare.xlsx'
+                    FilePath = current_app.root_path.replace('App', '') + 'Download/' + FileName
+                    self.HDownloadFile = "Download/" + FileName
+                    Xls[0].Export(self.HData, FilePath)
+
                 Log.Print(1, 'w', 'Addr: %s, File1 %s, File2 %s' % (request.remote_addr, File[0].filename, File[1].filename))
         return self.RenderTpl()
