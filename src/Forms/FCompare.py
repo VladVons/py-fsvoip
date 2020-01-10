@@ -21,7 +21,7 @@ class TFCompare(TForm):
     Price1 = StringField(validators=[DataRequired()])
     Price2 = StringField()
     File1  = FileField(validators=[DataRequired()])
-    File2  = FileField(validators=[DataRequired()])
+    File2  = FileField()
     Submit = SubmitField("OK")
 
     def Exec(self, aSheet, aCode, aName, aPrice, aFile1, aFile2):
@@ -61,15 +61,13 @@ class TFCompare(TForm):
                 File = [request.files.get('File1'), request.files.get('File2')]
                 Xls  = [None, None]
                 for i in range(2):
-                    FileName = tempfile.mktemp() + '_' + File[i].filename
-                    File[i].save(FileName)
-                    Xls[i] = UXLS.TXls(
-                        aSheet = Fields['Sheet'][i].data,
-                        aCode = Fields['Code'][i].data,
-                        aName = Fields['Name'][i].data,
-                        aPrice = Fields['Price'][i].data)
-                    Xls[i].LoadFile(FileName)
-                    self.Info += Xls[i].Info
-                    os.remove(FileName)
+                    Xls[i] = UXLS.TXls()
+                    if (File[i].filename):
+                        Xls[i].LoadFields(Fields['Sheet'][i].data, Fields['Code'][i].data, Fields['Name'][i].data, Fields['Price'][i].data)
+                        FileName = tempfile.mktemp() + '_' + File[i].filename
+                        File[i].save(FileName)
+                        Xls[i].LoadFile(FileName)
+                        self.Info += Xls[i].Info
+                        os.remove(FileName)
                 self.Data = Xls[0].Compare(Xls[1])
         return self.RenderTpl()

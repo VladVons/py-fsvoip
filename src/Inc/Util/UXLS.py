@@ -24,20 +24,12 @@ class TFields():
 
 
 class TXls():
-  def __init__(self, aSheet, aCode, aName, aPrice):
-    self.Fields = TFields()
-    self.Fields.Sheet = aSheet
-    self.Fields.Code  = column_index_from_string(aCode)  - 1
-    self.Fields.Name  = column_index_from_string(aName)  - 1
-    self.Fields.Price = column_index_from_string(aPrice) - 1
-
+  def __init__(self):
     self.Clear()
-
 
   def Clear(self):
     self.Data = {}
     self.Info = []
-
 
   @staticmethod
   def ToFloat(aValue):
@@ -47,19 +39,29 @@ class TXls():
       Result = 0
     return Result
 
-
   @staticmethod
   def ToDigit(aValue):
     if (aValue):
       aValue = re.sub('[^0-9]', '', str(aValue))
     return aValue
 
+  def Report(self, aMsg):
+    self.Info.append(aMsg)
+    print(aMsg)
 
-  def Report(self, aFile, aSheet, aRecords):
-    Info = 'File:%s, Sheet:%s, Records:%s' % (aFile, aSheet, aRecords)
-    self.Info.append(Info)
-    print(Info)
+  def AddItem(self, aCode, aName, aPrice):
+    Item = self.Data.get(aCode)
+    if (Item):
+      self.Report('Duplicate:%s, %s, %s' % (aCode, aName, Item.get('Name')))
+    else:
+      self.Data[aCode] = {'Name': aName, 'Price': aPrice}
 
+  def LoadFields(self, aSheet, aCode, aName, aPrice):
+      self.Fields = TFields()
+      self.Fields.Sheet = aSheet
+      self.Fields.Code = column_index_from_string(aCode) - 1
+      self.Fields.Name = column_index_from_string(aName) - 1
+      self.Fields.Price = column_index_from_string(aPrice) - 1
 
   def LoadFile_xls(self, aFile):
     wb = open_workbook(aFile)
@@ -73,10 +75,8 @@ class TXls():
     for i in range(0, ws.nrows):
       Code = self.ToDigit(ws.cell(i, self.Fields.Code).value)
       if (Code):
-        self.Data[Code] = {'Name': ws.cell(i, self.Fields.Name).value, 'Price': ws.cell(i, self.Fields.Price).value}
-
-    self.Report(aFile, ws.name, ws.nrows)
-
+        self.AddItem(Code, ws.cell(i, self.Fields.Name).value, ws.cell(i, self.Fields.Price).value)
+    self.Report('File:%s, Sheet:%s, Records:%s' % (aFile, ws.name, ws.nrows))
 
   def LoadFile_xlsx(self, aFile):
     wb = load_workbook(filename = aFile, read_only = True, data_only = True)
@@ -90,10 +90,8 @@ class TXls():
     for row in ws.rows:
       Code = self.ToDigit(row[self.Fields.Code].value)
       if (Code):
-        self.Data[Code] = {'Name': row[self.Fields.Name].value, 'Price': row[self.Fields.Price].value}
-
-    self.Report(aFile, ws.title, ws.max_row)
-
+        self.AddItem(Code, row[self.Fields.Name].value, row[self.Fields.Price].value)
+    self.Report('File:%s, Sheet:%s, Records:%s' % (aFile, ws.title, ws.max_row))
 
   #self.Fields indexes doesnt work correctly with compined cells
   def LoadFile_ods(self, aFile):
@@ -110,10 +108,8 @@ class TXls():
       if (MaxIdx < len(Item)):
         Code = self.ToDigit(Item[self.Fields.Code])
         if (Code):
-          self.Data[Code] = {'Name': Item[self.Fields.Name], 'Price': Item[self.Fields.Price]}
-
-    self.Report(aFile, Sheet, len(Items))
-
+          self.AddItem(Code, Item[self.Fields.Name], Item[self.Fields.Price])
+    self.Report('File:%s, Sheet:%s, Records:%s' % (aFile, Sheet, len(Items)))
 
   def LoadFile(self, aFile):
     Ext = os.path.splitext(aFile)[1].lower()
@@ -128,7 +124,6 @@ class TXls():
 
   def Compare(self, aTXls):
     Result = []
-
     # find missed items and items with different prices
     for Code in self.Data:
       Price1 = self.Data[Code].get('Price', 0)
@@ -148,11 +143,11 @@ class TXls():
     for Code in aTXls.Data:
       Name = aTXls.Data[Code].get('Name')
       if (not self.Data.get(Code)):
-          Price2 = aTXls.Data[Code].get('Price', 0)
+          Price2 = self.ToFloat(aTXls.Data[Code].get('Price', 0))
           Result.append([Code, Name, 0, Price2, 0, 0])
 
+    print('---5', len(Result))
     return Result
-
 
   @staticmethod
   def Export(aData, aFile):

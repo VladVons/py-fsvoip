@@ -41,24 +41,29 @@
 </form>
 
 <div class="login login-screen" style="width:1200px">
-<table>
-  <caption>
-    {%for Item in Form.Info %}
-      {{ Item }}<br>
-    {% endfor %}
-  </caption>
+  <table>
+    <tr">
+      <td>
+      {%for Item in Form.Info %}
+        {{ Item }}<br>
+      {% endfor %}
+      </td>
+    </tr>
+  </table>
+  <br>
 
-  <tr>
-    <th>N</th>
-    <th>Код</th>
-    <th>Назва</th>
-    <th>Ціна 1</th> 
-    <th>Ціна 2</th> 
-    <th>+/-</th> 
-    <th>%</th> 
-  </tr>
+  <table>
+    <tr>
+      <th>N</th>
+      <th>Код</th>
+      <th>Назва</th>
+      <th>Ціна 1</th> 
+      <th>Ціна 2</th> 
+      <th>+/-</th> 
+      <th>%</th> 
+    </tr>
 
-  {%for Item in Form.Data %}
+    {%for Item in Form.Data %}
     <tr bgcolor="{{ loop.cycle('', '#B0E0E6') }}">
       <td>{{ loop.index }}</td>
       <td>{{ Item[0] }}</td>
@@ -68,8 +73,8 @@
       <td>{{ Item[4] }}</td>
       <td>{{ Item[5] }}</td>
     </tr>
-  {% endfor %}
-</table>
+    {% endfor %}
+  </table>
 </div>
 
 <!--TFCompare.html end-->
